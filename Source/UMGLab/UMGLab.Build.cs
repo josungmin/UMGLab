@@ -18,6 +18,7 @@ public class UMGLab : ModuleRules
 			"InputCore", 
 			"EnhancedInput",
             "GameplayTags",
+			"CommonUI",
             "UMG",
 		});
 
