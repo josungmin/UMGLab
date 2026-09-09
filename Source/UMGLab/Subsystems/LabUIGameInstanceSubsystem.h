@@ -4,14 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "DataTypes/LabUIDataTypes.h"
 #include "LabUIGameInstanceSubsystem.generated.h"
+
+
 
 struct FGameplayTag;
 class ULabPrimaryLayoutWidget;
 class ULabActivatableWidgetBase;
 class ULabCommonButtonBase;
-
-
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnButtonDescriptionTextUpdatedDelegate, ULabCommonButtonBase*, BroadcastingButton, FText, DescriptionText);
 
@@ -39,6 +40,8 @@ public:
 	void RegisterCreatedPrimaryLayoutWidget(ULabPrimaryLayoutWidget* InCreatedWidget);
 
 	void PushSoftWidgetToStackAsync(const FGameplayTag& InWidgetStackTag, TSoftClassPtr<ULabActivatableWidgetBase> InSoftWidgetClass, TFunction<void(EAsyncPushWidgetState, ULabActivatableWidgetBase*)> AysncPushStateCallback);
+
+	void PushConfirmScreenToModalStackAynsc(EConfirmScreenType InScreenType, const FText& InScreenTitle, const FText& InScreenMsg, TFunction<void(EConfirmScreenButtonType)> ButtonClickedCallback);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnButtonDescriptionTextUpdatedDelegate OnButtonDescriptionTextUpdated;

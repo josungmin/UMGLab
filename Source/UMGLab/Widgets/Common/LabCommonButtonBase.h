@@ -6,9 +6,9 @@
 #include "CommonButtonBase.h"
 #include "LabCommonButtonBase.generated.h"
 
+
+
 class UCommonTextBlock;
-
-
 
 UCLASS(Abstract, BlueprintType, meta = (DisableNaiveTick))
 class UMGLAB_API ULabCommonButtonBase : public UCommonButtonBase

@@ -3,10 +3,13 @@
 
 #include "Subsystems/LabUIGameInstanceSubsystem.h"
 #include "Engine/AssetManager.h"
+#include "LabGameplayTags.h"
+#include "LabFunctionLibrary.h"
 
 #include "Widgets/CommonActivatableWidgetContainer.h"
 #include "Widgets/LabPrimaryLayoutWidget.h"
 #include "Widgets/LabActivatableWidgetBase.h"
+#include "Widgets/LabUIConfirmScreen.h"
 
 
 
@@ -71,5 +74,45 @@ void ULabUIGameInstanceSubsystem::PushSoftWidgetToStackAsync(const FGameplayTag&
 	UAssetManager::Get().GetStreamableManager().RequestAsyncLoad(
 		InSoftWidgetClass.ToSoftObjectPath(),
 		FStreamableDelegate::CreateLambda(OnAsyncLoadComplete)
+	);
+}
+
+void ULabUIGameInstanceSubsystem::PushConfirmScreenToModalStackAynsc(EConfirmScreenType InScreenType, const FText& InScreenTitle, const FText& InScreenMsg, TFunction<void(EConfirmScreenButtonType)> ButtonClickedCallback)
+{
+	UConfirmScreenInfoObject* CreatedInfoObject = nullptr;
+
+	switch (InScreenType)
+	{
+	case EConfirmScreenType::Ok:
+		CreatedInfoObject = UConfirmScreenInfoObject::CreateOKScreen(InScreenTitle, InScreenMsg);
+		break;
+
+	case EConfirmScreenType::YesNo:
+		CreatedInfoObject = UConfirmScreenInfoObject::CreateYesNoScreen(InScreenTitle, InScreenMsg);
+		break;
+
+	case EConfirmScreenType::OKCancel:
+		CreatedInfoObject = UConfirmScreenInfoObject::CreateOkCancelScreen(InScreenTitle, InScreenMsg);
+		break;
+
+	case EConfirmScreenType::Unknown:
+		break;
+	default:
+		break;
+	}
+
+	check(CreatedInfoObject);
+
+	PushSoftWidgetToStackAsync(
+		LabGameplayTags::Lab_WidgetStack_Modal,
+		ULabFunctionLibrary::GetFrontendSoftWidgetClassByTag(LabGameplayTags::Lab_Widget_ConfirmScreen),
+		[CreatedInfoObject, ButtonClickedCallback](EAsyncPushWidgetState InPushState, ULabActivatableWidgetBase* PushedWidget)
+		{
+			if (InPushState == EAsyncPushWidgetState::OnCreatedBeforePush)
+			{
+				ULabUIConfirmScreen* CreatedConfirmScreen = CastChecked<ULabUIConfirmScreen>(PushedWidget);
+				CreatedConfirmScreen->InitConfirmScreen(CreatedInfoObject, ButtonClickedCallback);
+			}
+		}
 	);
 }

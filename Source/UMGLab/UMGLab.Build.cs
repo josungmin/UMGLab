@@ -19,8 +19,9 @@ public class UMGLab : ModuleRules
 			"EnhancedInput",
             "GameplayTags",
 			"CommonUI",
+            "CommonInput",
             "UMG",
-		});
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

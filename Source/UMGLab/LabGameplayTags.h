@@ -17,4 +17,6 @@ namespace LabGameplayTags
 	// Widgets
 	UMGLAB_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Lab_Widget_PressAnyKeyScreen);
 	UMGLAB_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Lab_Widget_MainMenuScreen);
+	UMGLAB_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Lab_Widget_StoryScreen);
+	UMGLAB_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Lab_Widget_ConfirmScreen);
 }
